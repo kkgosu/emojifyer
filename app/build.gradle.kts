@@ -6,10 +6,12 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     compileSdk = BuildLibs.COMPILE_SDK
+    namespace = "com.kvlg.emojify"
 
     defaultConfig {
         applicationId = "com.kvlg.emojify"
@@ -38,11 +40,11 @@ android {
         compose = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        this.jvmTarget = "11"
+        this.jvmTarget = "21"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Libs.Compose.compose_version

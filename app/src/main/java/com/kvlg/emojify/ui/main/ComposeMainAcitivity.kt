@@ -5,14 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.NightsStay
@@ -20,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -88,42 +83,5 @@ private fun EmojifyerMainScreen(mainViewModel: MainViewModel) {
             Tabs(tabs = tabs, pagerState = pagerState)
             TabsContent(tabs = tabs, pagerState = pagerState)
         }
-        if (mainViewModel.isFirstLaunch.value) {
-            MetricsAlert(mainViewModel = mainViewModel)
-        }
     }
-}
-
-@Composable
-private fun MetricsAlert(mainViewModel: MainViewModel) {
-    AlertDialog(
-        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
-        onDismissRequest = {},
-        dismissButton = {
-            TextButton(onClick = {
-                mainViewModel.setMetricsEnabled(false)
-                mainViewModel.setNotFirstLaunch()
-            }) {
-                Text(text = "Maybe later")
-            }
-        },
-        confirmButton = {
-            Button(onClick = {
-                mainViewModel.setMetricsEnabled(true)
-                mainViewModel.setNotFirstLaunch()
-            }) {
-                Text(text = "Confirm")
-            }
-        },
-        title = {
-            Text(text = "Privacy info")
-        },
-        text = {
-            Text(
-                text = "This app uses AppMetrica. AppMetrica analyzes app usage data, including the device it is running on, the installation source, calculates conversion, collects statistics of your activity for product analytics and optimization, as well as for troubleshooting. Information collected in this way cannot identify you. Depersonalized information about your use of this app collected by AppMetrica tools will be transferred to Yandex and stored on Yandex’s server in the EU and the Russian Federation. Do you agree?"
-            )
-        }, shape = RoundedCornerShape(16.dp),
-        backgroundColor = EmojifyerTheme.colors.background1,
-        contentColor = EmojifyerTheme.colors.text
-    )
 }

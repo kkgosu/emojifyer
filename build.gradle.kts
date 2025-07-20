@@ -16,6 +16,7 @@ buildscript {
         classpath(BuildLibs.GRADLE_PLUGIN)
         classpath(BuildLibs.KOTLIN_PLUGIN)
         classpath(BuildLibs.HILT_PLUGIN)
+        classpath("org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.0.20")
     }
 }
 
@@ -33,8 +34,8 @@ subprojects {
             ?.apply {
                 configureBuildTypes()
                 with(compileOptions) {
-                    sourceCompatibility = JavaVersion.VERSION_11
-                    targetCompatibility = JavaVersion.VERSION_11
+                    sourceCompatibility = JavaVersion.VERSION_21
+                    targetCompatibility = JavaVersion.VERSION_21
                 }
             }
     }

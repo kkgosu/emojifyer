@@ -1,9 +1,8 @@
 object Libs {
-    const val APP_METRICA = "com.yandex.android:mobmetricalib:5.0.0"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     const val GSON = "com.google.code.gson:gson:2.8.6"
-    const val HILT_ANDROID = "com.google.dagger:hilt-android:2.43.2"
-    const val HILT_COMPILER = "com.google.dagger:hilt-android-compiler:2.43.2"
+    const val HILT_ANDROID = "com.google.dagger:hilt-android:2.56.2"
+    const val HILT_COMPILER = "com.google.dagger:hilt-android-compiler:2.56.2"
     const val HILT_COMPOSE_VIEWMODEL = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
     const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
     const val LIFECYCLE_COMPOSE_VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
