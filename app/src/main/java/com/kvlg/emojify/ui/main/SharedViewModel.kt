@@ -1,8 +1,6 @@
 package com.kvlg.emojify.ui.main
 
-import android.content.SharedPreferences
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,24 +29,23 @@ import kotlin.collections.set
 class SharedViewModel @Inject constructor(
     resourceManager: ResourceManager,
     private val interactor: EmojiInteractor,
-    private val preferences: SharedPreferences
 ) : ViewModel() {
 
     private val emojiMap = mutableMapOf<String, EmojiItem>()
     private var emojiList2 = emptyList<EmojiItem2>()
-
 
     val history: LiveData<Result<List<EmojifyedText>>> = interactor.getAllTexts()
     var loading = mutableStateOf(false)
         private set
     var emojiText = mutableStateOf("")
         private set
-    var showInAppReview = mutableStateOf(false)
 
     init {
         val gson = Gson()
-        val textJson = resourceManager.getAsset("emojis.json").bufferedReader().use { it.readText() }
-        val textJson2 = resourceManager.getAsset("emojis2.json").bufferedReader().use { it.readText() }
+        val textJson =
+            resourceManager.getAsset("emojis.json").bufferedReader().use { it.readText() }
+        val textJson2 =
+            resourceManager.getAsset("emojis2.json").bufferedReader().use { it.readText() }
         val jsonObject = JSONObject(textJson)
         val emojiKeys = gson.fromJson(textJson, Emojis::class.java)
         emojiList2 = gson.fromJson(textJson2, Array<EmojiItem2>::class.java).toList()
@@ -56,8 +53,6 @@ class SharedViewModel @Inject constructor(
         emojiKeys.keys.forEach {
             emojiMap[it] = gson.fromJson(jsonObject[it].toString(), EmojiItem::class.java)
         }
-
-        checkForInAppReview()
     }
 
     fun emojifyText() {
@@ -123,23 +118,17 @@ class SharedViewModel @Inject constructor(
         val filteredWord = word.lowercase()
         val result = emojiMap.values.find { em -> em.keywords.contains(filteredWord) }
         return result?.char
-            ?: emojiList2.find { it.aliases.contains(filteredWord) || it.description == filteredWord || it.tags.contains(filteredWord) }?.emoji
-    }
-
-    private fun checkForInAppReview() {
-        val current = preferences.getInt(APP_ENTERS_COUNT_KEY, 1)
-        if (current % 20 == 0) {
-            showInAppReview.value = true
-        }
-        preferences.edit {
-            putInt(APP_ENTERS_COUNT_KEY, current + 1)
-        }
+            ?: emojiList2.find {
+                it.aliases.contains(filteredWord) || it.description == filteredWord || it.tags.contains(
+                    filteredWord
+                )
+            }?.emoji
     }
 
     companion object {
         private const val TAG = "SharedViewModel"
         private const val STRING_TO_TEST = "hello hellos hellos] hello])}/ face."
 
-        private const val APP_ENTERS_COUNT_KEY = "APP_ENTERS_COUNT_KEY"
+
     }
 }

@@ -11,7 +11,6 @@ object Libs {
     const val LIFECYCLE_VIEW_MODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     const val LOTTIE_COMPOSE = "com.airbnb.android:lottie-compose:4.2.2"
     const val MATERIAL = "com.google.android.material:material:1.8.0-alpha02"
-    const val PLAY_CORE_KTX = "com.google.android.play:core:1.10.1"
     const val PREFERENCES = "androidx.preference:preference-ktx:1.1.1"
     const val ROOM_COMPILER = "androidx.room:room-compiler:2.5.0-alpha02"
     const val ROOM_COMMON = "androidx.room:room-common:2.5.0-alpha02"

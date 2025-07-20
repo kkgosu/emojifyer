@@ -1,8 +1,6 @@
 package com.kvlg.emojify.ui.components
 
-import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -47,12 +45,10 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.google.android.play.core.review.ReviewManagerFactory
 import com.kvlg.emojify.R
 import com.kvlg.emojify.ui.main.SharedViewModel
 import com.kvlg.emojify.ui.theme.EmojifyerTheme
 import com.kvlg.emojify.utils.copyText
-import com.kvlg.emojify.utils.findActivity
 
 /**
  * @author Konstantin Koval
@@ -67,11 +63,11 @@ fun CreateFragment(viewModel: SharedViewModel = hiltViewModel()) {
     val loading by remember(viewModel::loading)
     val keyboardController = LocalSoftwareKeyboardController.current
     val lottieComposition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.preloader_51))
-    val progress by animateLottieCompositionAsState(composition = lottieComposition, iterations = LottieConstants.IterateForever)
-    val showInAppReview by remember(viewModel::showInAppReview)
-    if (showInAppReview) {
-        showInAppReview(context, viewModel)
-    }
+    val progress by animateLottieCompositionAsState(
+        composition = lottieComposition,
+        iterations = LottieConstants.IterateForever
+    )
+
     Box {
         Column {
             TextField(
@@ -85,8 +81,16 @@ fun CreateFragment(viewModel: SharedViewModel = hiltViewModel()) {
                     viewModel.emojifyText()
                     keyboardController?.hide()
                 }),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
-                placeholder = { Text(text = stringResource(id = R.string.enter_text_here), color = EmojifyerTheme.colors.hintText) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                placeholder = {
+                    Text(
+                        text = stringResource(id = R.string.enter_text_here),
+                        color = EmojifyerTheme.colors.hintText
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = EmojifyerTheme.colors.text,
                     cursorColor = EmojifyerTheme.colors.pointer,
@@ -173,26 +177,13 @@ fun CreateFragment(viewModel: SharedViewModel = hiltViewModel()) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.White.copy(alpha = 0.5f))
-                    .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = {}),
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {}),
                 composition = lottieComposition,
                 progress = progress,
             )
-        }
-    }
-}
-
-private fun showInAppReview(context: Context, viewModel: SharedViewModel) {
-    val reviewManager = ReviewManagerFactory.create(context)
-    val requestReviewFlow = reviewManager.requestReviewFlow()
-    requestReviewFlow.addOnCompleteListener { request ->
-        if (request.isSuccessful) {
-            val reviewInfo = request.result
-            val flow = reviewManager.launchReviewFlow(context.findActivity(), reviewInfo)
-            flow.addOnCompleteListener {
-                viewModel.showInAppReview.value = false
-            }
-        } else {
-            Log.e("CreateFragment", request.exception?.message ?: "Error in showInAppReview()")
         }
     }
 }

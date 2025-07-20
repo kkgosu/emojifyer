@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.apache.commons.io.output.ByteArrayOutputStream
 
 plugins {
@@ -65,7 +64,6 @@ dependencies {
     implementation(Libs.LIFECYCLE_VIEW_MODEL_KTX)
     implementation(Libs.LOTTIE_COMPOSE)
     implementation(Libs.MATERIAL)
-    implementation(Libs.PLAY_CORE_KTX)
     implementation(Libs.PREFERENCES)
     implementation(Libs.ROOM_KTX)
     implementation(Libs.ROOM_RUNTIME)
@@ -82,6 +80,9 @@ dependencies {
     implementation(Libs.Compose.SYSTEM_UI_CONTROLLER)
     implementation(Libs.Compose.TOOLING)
     implementation(Libs.Compose.TOOLING_PREVIEW)
+
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
 
     kapt(Libs.HILT_COMPILER)
     kapt(Libs.ROOM_COMPILER)

@@ -13,6 +13,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.NightsStay
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,6 +22,7 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.kvlg.emojify.R
 import com.kvlg.emojify.ui.components.EmojifyScaffold
 import com.kvlg.emojify.ui.components.TabItem
@@ -42,8 +45,21 @@ class ComposeMainAcitivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val mainViewModel: MainViewModel = hiltViewModel()
+            val showInAppReview by remember(mainViewModel::showInAppReview)
+            if (showInAppReview) {
+                showInAppReview()
+            }
             EmojifyerTheme(darkTheme = !mainViewModel.isLightTheme.value) {
                 EmojifyerMainScreen(mainViewModel)
+            }
+        }
+    }
+
+    private fun showInAppReview() {
+        val reviewManager = ReviewManagerFactory.create(this)
+        reviewManager.requestReviewFlow().addOnCompleteListener {
+            if (it.isSuccessful) {
+                reviewManager.launchReviewFlow(this, it.result)
             }
         }
     }
