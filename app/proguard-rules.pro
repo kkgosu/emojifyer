@@ -1,4 +1,4 @@
--keepclassmembers class com.kvlg.emojify.model.** { <fields>; }
+-keep class com.kvlg.emojify.model.** { *; }
 
 # Move all classes and packages into the root package.
 -flattenpackagehierarchy
